@@ -84,7 +84,8 @@ const RideBookingForm = () => {
     const [pickupDate, setPickupDate] = useState(null);
     const [pickupTime, setPickupTime] = useState(null);
     const [note, setNote] = useState('');
-    const [isLoading, setIsLoading] = useState(false)
+    const [isLoading, setIsLoading] = useState(false);
+    const [showModal, setShowModal] = useState(false);
 
     const form = useRef();
 
@@ -99,7 +100,6 @@ const RideBookingForm = () => {
             .then(
                 () => {
                     console.log('SUCCESS!');
-                    alert("Booking Succesfully Done🚖");
                     setIsLoading(false)
                     setService("")
                     setFirstName("")
@@ -110,6 +110,7 @@ const RideBookingForm = () => {
                     setPickupDate("")
                     setStartCity("")
                     setPickupTime("")
+                    setShowModal(true);
                 },
                 (error) => {
                     console.log('FAILED...', error.text);
@@ -120,7 +121,7 @@ const RideBookingForm = () => {
     return (
         <div>
             <div className='bg-black flex flex-row justify-evenly items-center p-4'>
-                <img className='w-10 md:w-25 hover:cursor-pointer' src={logo} alt="Logo" onClick={() => window.location.href = "https://chelmsfordmastercabs.com"}/>
+                <img className='w-10 md:w-25 hover:cursor-pointer' src={logo} alt="Logo" onClick={() => window.location.href = "https://chelmsfordmastercabs.com"} />
                 <h1 className='font-serif text-xl sm:text-3xl font-bold text-amber-300'>Book Your Ride</h1>
                 <button className="text-black bg-amber-100 px-3 md:px-6 py-1 rounded-full hover:bg-amber-300 hover:scale-105 hover:cursor-pointer" onClick={() => window.location.href = "https://chelmsfordmastercabs.com"}>Back</button>
             </div>
@@ -326,8 +327,26 @@ const RideBookingForm = () => {
                             <button type="submit" className="w-[40%] bg-amber-300 text-black px-2 sm:px-4 py-2 rounded sm:rounded-full hover:bg-amber-400 hover:scale-105 transition-all duration-300">{isLoading ? "BOOKING..." : "BOOK NOW"}</button>
                         </div>
                     </div>
-                </form>
+                </form>  
             </div>
+            {/* Modal for success message */}
+            {showModal && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                        <div className="bg-gray-800 p-6 rounded-lg shadow-lg text-center w-[70%] sm:w-[40%]">
+                            <h2 className="text-2xl font-semibold text-amber-400 mb-4">Booking Successful!</h2>
+                            <p className="text-lg mb-6 text-white">Your car booking has been successfully submitted! We will be in touch shortly.</p>
+                            <button
+                                onClick={() => {
+                                    setShowModal(false);
+                                    window.location.href = 'https://chelmsfordmastercabs.com';
+                                }}
+                                className="px-8 py-2 bg-red-400 text-black rounded-full hover:bg-red-500 transition-all duration-300"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                )}
         </div>
 
     );
